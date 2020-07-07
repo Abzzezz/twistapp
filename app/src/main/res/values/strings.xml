@@ -1,0 +1,29 @@
+<!--
+  ~ Copyright (c) 2020.
+  ~ The code used in this project is entirely owned by Roman P.
+  ~ Code snippets / templates / etc. are mentioned and credited.
+  -->
+
+<resources>
+    <string name="app_name">twistapp</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="global_video">Video</string>
+    <string name="global_notifications">Notifications</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_tracker">Download Tracker</string>
+
+    <string name="download_delay">Download delay (seconds)</string>
+    <string name="check_list_for_existing">Check list for existing Anime</string>
+    <string name="video_fill_mode">Video stretch mode</string>
+    <string name="attachment_summary_on">Checks if show already exists.</string>
+    <string name="attachment_summary_off">Does not check. Entries can be duplicated</string>
+
+</resources>

@@ -1,0 +1,15 @@
+<!--
+  ~ Copyright (c) 2020.
+  ~ The code used in this project is entirely owned by Roman P.
+  ~ Code snippets / templates / etc. are mentioned and credited.
+  -->
+
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <FrameLayout
+            android:id="@+id/settings"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+</LinearLayout>

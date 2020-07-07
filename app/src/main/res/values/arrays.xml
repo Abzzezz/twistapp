@@ -1,0 +1,39 @@
+<!--
+  ~ Copyright (c) 2020.
+  ~ The code used in this project is entirely owned by Roman P.
+  ~ Code snippets / templates / etc. are mentioned and credited.
+  -->
+
+<resources>
+    <!-- video Preference -->
+    <string-array name="video_zoom_entries">
+        <item>Zoom to fit</item>
+        <item>Fill to fit</item>
+        <item>Fit to fit</item>
+        <item>Fixed width</item>
+        <item>Fixed height</item>
+    </string-array>
+
+    <string-array name="video_zoom_values">
+        <!-- Zoom-->
+        <item>4</item>
+        <!-- Fill-->
+        <item>3</item>
+        <!-- Fit-->
+        <item>0</item>
+        <!-- Fixed w-->
+        <item>1</item>
+        <!-- Fixed h-->
+        <item>2</item>
+    </string-array>
+
+    <string-array name="video_player_entries">
+        <item>Old Player</item>
+        <item>Exoplayer (new)</item>
+    </string-array>
+
+    <string-array name="video_player_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+</resources>

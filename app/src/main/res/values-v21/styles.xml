@@ -1,0 +1,13 @@
+<!--
+  ~ Copyright (c) 2020.
+  ~ The code used in this project is entirely owned by Roman P.
+  ~ Code snippets / templates / etc. are mentioned and credited.
+  -->
+
+<resources>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+</resources>

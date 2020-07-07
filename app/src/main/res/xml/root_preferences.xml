@@ -1,0 +1,48 @@
+<!--
+  ~ Copyright (c) 2020.
+  ~ The code used in this project is entirely owned by Roman P.
+  ~ Code snippets / templates / etc. are mentioned and credited.
+  -->
+
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:background="@color/colorPrimaryDark">
+
+    <PreferenceCategory
+            app:title="@string/action_settings">
+
+        <SwitchPreferenceCompat
+                app:key="check_existing"
+                app:title="@string/check_list_for_existing"
+                app:summaryOn="@string/attachment_summary_on"
+                app:summaryOff="@string/attachment_summary_off"/>
+
+        <EditTextPreference
+                app:key="download_delay"
+                app:title="@string/download_delay"
+                app:useSimpleSummaryProvider="true"
+                app:summary="Delay between downloads in seconds"
+                app:defaultValue="0"/>
+
+    </PreferenceCategory>
+    <PreferenceCategory
+            android:title="@string/global_video">
+        <ListPreference
+                android:defaultValue="0"
+                android:title="@string/video_fill_mode" android:entries="@array/video_zoom_entries"
+                android:entryValues="@array/video_zoom_values" android:key="video_stretch_preference"/>
+        <!--
+                <ListPreference
+                        android:defaultValue="0"
+                        android:title="Video player" android:entries="@array/video_player_entries"
+                        android:entryValues="@array/video_player_values" android:key="video_player_preference"/>
+                          -->
+    </PreferenceCategory>
+    <PreferenceCategory
+            android:title="@string/menu_tracker">
+        <Preference android:title="Clear tacking log"
+                    android:key="clear_tracker"
+                    android:summary="Clear your tracking history."/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

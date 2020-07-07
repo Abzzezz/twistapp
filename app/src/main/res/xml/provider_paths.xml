@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020.
+  ~ The code used in this project is entirely owned by Roman P.
+  ~ Code snippets / templates / etc. are mentioned and credited.
+  -->
+
+<paths>
+    <external-path
+            name="external"
+            path="."/>
+    <external-files-path
+            name="external_files"
+            path="."/>
+    <cache-path
+            name="cache"
+            path="."/>
+    <external-cache-path
+            name="external_cache"
+            path="."/>
+    <files-path
+            name="files"
+            path="."/>
+
+</paths>

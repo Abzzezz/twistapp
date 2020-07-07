@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020.
+  ~ The code used in this project is entirely owned by Roman P.
+  ~ Code snippets / templates / etc. are mentioned and credited.
+  -->
+
+<resources>
+    <color name="colorPrimary">#6b778d</color>
+    <color name="colorPrimaryDark">#263859</color>
+    <color name="colorAccent">#ff6768</color>
+</resources>
