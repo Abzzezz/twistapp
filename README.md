@@ -3,7 +3,7 @@
  
  ## TODO:
 - [x] First stable version
-- [ ] Compile and upload
+- [x] Compile and upload
 - [ ] create more javadoc
 - [ ] Improve design
 - [ ] Upload icon
