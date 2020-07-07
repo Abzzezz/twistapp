@@ -46,7 +46,8 @@ public class RefreshTask extends TaskExecutor implements Callable<String> {
         JSONObject detailJSON = new JSONObject(new BufferedReader(new InputStreamReader(connection.getInputStream())).lines().collect(Collectors.joining()));
         int newEpisodes = detailJSON.getJSONArray("episodes").length();
         String newEpisodesString = String.valueOf(newEpisodes);
-        if (newEpisodes == episodes) {
+
+        if (newEpisodes > episodes) {
             TwistAppMain.getINSTANCE().getShowSaver().updateEntry(index, new String[]{"episode", newEpisodesString});
             //Open URL to sources
             url = new URL(StringHandler.getApiUrl(showPath, StringHandler.SOURCE_MODE));

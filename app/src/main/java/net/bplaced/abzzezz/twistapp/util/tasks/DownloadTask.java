@@ -72,13 +72,13 @@ public class DownloadTask extends TaskExecutor implements Callable<String>, Task
         final File outDir = new File(application.getFilesDir(), showName);
         if (!outDir.exists()) outDir.mkdir();
         this.outFile = new File(outDir, episode + ".mp4");
-
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         connection.setRequestProperty("User-Agent", StringHandler.USER_AGENT);
         connection.addRequestProperty("Range", "f'bytes={pos}-");
         connection.addRequestProperty("Referer", "https://twist.moe/a/");
         connection.connect();
+
         //Open Stream
         this.fileOutputStream = new FileOutputStream(outFile);
         ReadableByteChannel readableByteChannel = Channels.newChannel(connection.getInputStream());

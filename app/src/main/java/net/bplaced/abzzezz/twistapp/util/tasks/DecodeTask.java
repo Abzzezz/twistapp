@@ -38,7 +38,6 @@ public class DecodeTask extends TaskExecutor implements Callable<String> {
 
     @Override
     public String call() throws Exception {
-        String episodeURL = "";
         byte[] sourceDecoded = Base64.getDecoder().decode(item);
         byte[] salt = Arrays.copyOfRange(sourceDecoded, 8, 16);
         MessageDigest md5 = MessageDigest.getInstance("MD5");
@@ -50,7 +49,8 @@ public class DecodeTask extends TaskExecutor implements Callable<String> {
         try {
             aesCBC.init(Cipher.DECRYPT_MODE, key, iv);
             byte[] decryptedData = aesCBC.doFinal(encrypted);
-            return StringHandler.getApiUrl(new String(decryptedData, StandardCharsets.UTF_8), 0);
+            return StringHandler.STREAM_URL + new String(decryptedData, StandardCharsets.UTF_8);
+
         } catch (InvalidAlgorithmParameterException | BadPaddingException | IllegalBlockSizeException e) {
             e.printStackTrace();
             return "-1";

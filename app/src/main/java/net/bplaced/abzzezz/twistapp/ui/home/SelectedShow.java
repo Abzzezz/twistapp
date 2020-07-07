@@ -8,6 +8,7 @@ package net.bplaced.abzzezz.twistapp.ui.home;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -106,7 +107,7 @@ public class SelectedShow extends AppCompatActivity {
 
     private File getEpisodeFile(final int index) {
         if (showDir.listFiles() != null) {
-            return showDir.listFiles()[index];
+            return Arrays.stream(showDir.listFiles()).filter(file -> file.getName().substring(0, file.getName().lastIndexOf(".")).equals(String.valueOf(index))).findFirst().get();
         }
         return null;
     }
@@ -196,10 +197,17 @@ public class SelectedShow extends AppCompatActivity {
             final ImageView imageView = view.findViewById(R.id.download_button_episode);
             final TextView textView = view.findViewById(R.id.episode_name_view);
             textView.setText("Episode: " + index);
+
             if (episodeExists(index)) {
                 textView.setTextColor(0xFFff6768);
                 imageView.setImageResource(R.drawable.delete);
+                imageView.setOnClickListener(view1 -> new IonAlert(SelectedShow.this, IonAlert.WARNING_TYPE).setTitleText("Delete file?").setConfirmText("Yes, delete").setConfirmClickListener(ionAlert -> {
+                    getEpisodeFile(index).delete();
+                    refreshAdapter();
+                    ionAlert.dismissWithAnimation();
+                }).setCancelText("Abort").setCancelClickListener(IonAlert::dismissWithAnimation).show());
             } else {
+                textView.setTextColor(R.color.colorPrimary);
                 imageView.setImageResource(R.drawable.download);
                 imageView.setOnClickListener(view1 -> download(index, 1, 0));
             }
