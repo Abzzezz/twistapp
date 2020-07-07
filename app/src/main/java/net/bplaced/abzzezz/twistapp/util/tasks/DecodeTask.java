@@ -6,8 +6,8 @@
 
 package net.bplaced.abzzezz.twistapp.util.tasks;
 
-import net.bplaced.abzzezz.twistapp.util.KeyUtil;
-import net.bplaced.abzzezz.twistapp.util.StringHandler;
+import net.bplaced.abzzezz.twistapp.util.misc.KeyUtil;
+import net.bplaced.abzzezz.twistapp.util.misc.StringHandler;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -50,7 +50,7 @@ public class DecodeTask extends TaskExecutor implements Callable<String> {
         try {
             aesCBC.init(Cipher.DECRYPT_MODE, key, iv);
             byte[] decryptedData = aesCBC.doFinal(encrypted);
-            return StringHandler.STREAM_URL + new String(decryptedData, StandardCharsets.UTF_8);
+            return StringHandler.getApiUrl(new String(decryptedData, StandardCharsets.UTF_8), 0);
         } catch (InvalidAlgorithmParameterException | BadPaddingException | IllegalBlockSizeException e) {
             e.printStackTrace();
             return "-1";

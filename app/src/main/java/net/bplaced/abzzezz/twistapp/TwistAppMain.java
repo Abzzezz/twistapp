@@ -15,6 +15,9 @@ import ga.abzzezz.util.logging.Logger;
 import net.bplaced.abzzezz.twistapp.util.file.DownloadTracker;
 import net.bplaced.abzzezz.twistapp.util.file.ShowSaver;
 
+/**
+ * Main class to handle simple tasks
+ */
 public class TwistAppMain {
 
     public static final String NOTIFICATION_CHANNEL_ID = "Twist-app-notification-channel";

@@ -4,12 +4,15 @@
  * Code snippets / templates / etc. are mentioned and credited.
  */
 
-package net.bplaced.abzzezz.twistapp.util;
+package net.bplaced.abzzezz.twistapp.util.misc;
 
 import java.util.Random;
 
 public class StringHandler {
 
+    /**
+     * Often used Strings
+     */
     public static final String API_URL = "https://twist.moe/api/anime/";
     public static final String KEY = "LXgIVP&PorO68Rq7dTx8N^lP!Fa5sGJ^*XK";
     public static final String STREAM_URL = "https://twistcdn.bunny.sh";

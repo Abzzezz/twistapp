@@ -20,8 +20,8 @@ import ga.abzzezz.util.logging.Logger;
 import net.bplaced.abzzezz.twistapp.R;
 import net.bplaced.abzzezz.twistapp.TwistAppMain;
 import net.bplaced.abzzezz.twistapp.ui.home.SelectedShow;
-import net.bplaced.abzzezz.twistapp.util.IntentHelper;
-import net.bplaced.abzzezz.twistapp.util.StringHandler;
+import net.bplaced.abzzezz.twistapp.util.misc.IntentHelper;
+import net.bplaced.abzzezz.twistapp.util.misc.StringHandler;
 import net.bplaced.abzzezz.twistapp.util.receiver.StopDownloadingReceiver;
 
 import java.io.File;

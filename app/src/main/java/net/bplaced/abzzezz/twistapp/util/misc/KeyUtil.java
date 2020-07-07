@@ -4,7 +4,7 @@
  * Code snippets / templates / etc. are mentioned and credited.
  */
 
-package net.bplaced.abzzezz.twistapp.util;
+package net.bplaced.abzzezz.twistapp.util.misc;
 
 import java.security.DigestException;
 import java.security.MessageDigest;

@@ -21,7 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import id.ionbit.ionalert.IonAlert;
 import net.bplaced.abzzezz.twistapp.R;
 import net.bplaced.abzzezz.twistapp.TwistAppMain;
-import net.bplaced.abzzezz.twistapp.util.InputDialogBuilder;
+import net.bplaced.abzzezz.twistapp.util.misc.InputDialogBuilder;
 import net.bplaced.abzzezz.twistapp.util.file.ShowSaver;
 import net.bplaced.abzzezz.twistapp.util.tasks.AddItemTask;
 import net.bplaced.abzzezz.twistapp.util.tasks.RefreshTask;

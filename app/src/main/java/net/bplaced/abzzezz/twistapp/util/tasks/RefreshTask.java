@@ -8,7 +8,7 @@ package net.bplaced.abzzezz.twistapp.util.tasks;
 
 import android.util.Log;
 import net.bplaced.abzzezz.twistapp.TwistAppMain;
-import net.bplaced.abzzezz.twistapp.util.StringHandler;
+import net.bplaced.abzzezz.twistapp.util.misc.StringHandler;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

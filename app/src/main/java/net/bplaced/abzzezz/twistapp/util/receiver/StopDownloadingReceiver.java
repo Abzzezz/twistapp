@@ -11,7 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 import ga.abzzezz.util.logging.Logger;
-import net.bplaced.abzzezz.twistapp.util.IntentHelper;
+import net.bplaced.abzzezz.twistapp.util.misc.IntentHelper;
 import net.bplaced.abzzezz.twistapp.util.tasks.DownloadTask;
 
 public class StopDownloadingReceiver extends BroadcastReceiver {
