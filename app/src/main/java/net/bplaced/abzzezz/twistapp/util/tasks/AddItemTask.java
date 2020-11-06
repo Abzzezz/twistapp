@@ -8,6 +8,7 @@ package net.bplaced.abzzezz.twistapp.util.tasks;
 
 import android.util.Log;
 import net.bplaced.abzzezz.twistapp.util.misc.StringHandler;
+import net.bplaced.abzzezz.twistapp.util.misc.URLUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -20,13 +21,13 @@ import java.net.URL;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
-public class AddItemTask extends TaskExecutor implements Callable<String[]> {
+public class AddItemTask extends TaskExecutor implements Callable<JSONObject> {
 
     private final String showName;
     private URL url;
 
-    public AddItemTask(final String item) {
-        this.showName = item.substring(item.indexOf("/a/") + 3, item.lastIndexOf("/"));
+    public AddItemTask(final String itemUrl) {
+        this.showName = itemUrl.substring(itemUrl.indexOf("/a/") + 3, itemUrl.lastIndexOf("/"));
         try {
             this.url = new URL(StringHandler.API_URL + showName);
         } catch (MalformedURLException e) {
@@ -36,37 +37,36 @@ public class AddItemTask extends TaskExecutor implements Callable<String[]> {
 
     }
 
-    public <R> void executeAsync(Callback<String[]> callback) {
+    public <R> void executeAsync(final Callback<JSONObject> callback) {
         super.executeAsync(this, callback);
     }
 
     @Override
-    public String[] call() throws Exception {
-        HttpsURLConnection connection = createHttpsConnection(url);
+    public JSONObject call() throws Exception {
+        HttpsURLConnection connection = URLUtil.createHttpsConnection(url);
         connection.connect();
-        final String details = new BufferedReader(new InputStreamReader(connection.getInputStream())).lines().collect(Collectors.joining());
+        final JSONObject fetchedDetails = new JSONObject(new BufferedReader(new InputStreamReader(connection.getInputStream())).lines().collect(Collectors.joining()));
 
         this.url = new URL(StringHandler.API_URL + showName + "/sources/");
-        connection = createHttpsConnection(url);
+        connection = URLUtil.createHttpsConnection(url);
         connection.connect();
 
-        final String source = new BufferedReader(new InputStreamReader(connection.getInputStream())).lines().collect(Collectors.joining());
-        final JSONArray arrays = new JSONArray(source);
-        final JSONObject jsonSource = new JSONObject();
-        for (int i = 0; i < arrays.length(); i++) {
-            JSONObject item = arrays.getJSONObject(i);
-            jsonSource.put(String.valueOf(i), item.getString("source"));
+        final JSONArray fetchedSources = new JSONArray(new BufferedReader(new InputStreamReader(connection.getInputStream())).lines().collect(Collectors.joining()));
+        final JSONArray sources = new JSONArray();
+
+        for (int i = 0; i < fetchedSources.length(); i++) {
+            final JSONObject item = fetchedSources.getJSONObject(i);
+            sources.put(item.getString("source"));
         }
 
-        return new String[]{details, jsonSource.toString(), showName};
-    }
+        final JSONObject showDetails = new JSONObject();
+        showDetails.put("url", showName)
+                .put("title", fetchedDetails.getString("title"))
+                .put("description", fetchedDetails.getString("description"))
+                .put("id", fetchedDetails.getString("id"))
+                .put("sources", sources)
+                .put("episode_count", sources.length());
 
-
-    private HttpsURLConnection createHttpsConnection(final URL url) throws IOException {
-        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-        connection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36");
-        connection.addRequestProperty("x-access-token", StringHandler.getRequestToken());
-        return connection;
+        return showDetails;
     }
 }

@@ -17,9 +17,11 @@ public class StringHandler {
     public static final String KEY = "LXgIVP&PorO68Rq7dTx8N^lP!Fa5sGJ^*XK";
     public static final String STREAM_URL = "https://twistcdn.bunny.sh";
     public static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_2) AppleWebKit/601.3.9 (KHTML, like Gecko) Version/9.0.2 Safari/601.3.9";
+    public static final int SOURCE_MODE = 1;
 
     /**
      * TODO add more tokens
+     *
      * @return token to use
      */
     public static String getRequestToken() {
@@ -27,10 +29,9 @@ public class StringHandler {
         return tokens[new Random().nextInt(tokens.length)];
     }
 
-    public static final int SOURCE_MODE = 1;
-
     /**
      * Get api url
+     *
      * @param show
      * @param mode
      * @return
@@ -45,7 +46,6 @@ public class StringHandler {
     }
 
     /**
-     *
      * @param showName
      * @param episode
      * @return

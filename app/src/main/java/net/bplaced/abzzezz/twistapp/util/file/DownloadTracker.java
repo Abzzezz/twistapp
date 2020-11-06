@@ -23,7 +23,7 @@ public class DownloadTracker {
 
     public final File trackerFile;
 
-    public DownloadTracker(Context context) {
+    public DownloadTracker(final Context context) {
         this.trackerFile = new File(context.getDataDir(), "DownloadTrack.xml");
         if (!trackerFile.exists()) {
             try {
@@ -42,9 +42,9 @@ public class DownloadTracker {
      */
     public void submitTrack(final String information) {
         @SuppressLint("SimpleDateFormat") String time = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z").format(new Date(System.currentTimeMillis()));
-        String track = time + "\n" + information + "\n";
+        final String track = time + "\n" + information + "\n";
 
-        try (FileOutputStream fos = new FileOutputStream(trackerFile, true)) {
+        try (final FileOutputStream fos = new FileOutputStream(trackerFile, true)) {
             fos.write(track.getBytes());
             fos.flush();
         } catch (IOException e) {

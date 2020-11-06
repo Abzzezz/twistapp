@@ -23,7 +23,7 @@ public class SettingsFragment extends Fragment {
 
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.settings_layout, container, false);
+        final View root = inflater.inflate(R.layout.settings_layout, container, false);
         getParentFragmentManager().beginTransaction().replace(R.id.settings, new SettingsFragmentInner()).commit();
         return root;
     }
@@ -32,14 +32,14 @@ public class SettingsFragment extends Fragment {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
-            Preference clearTrackerButton = findPreference("clear_tracker");
+            final Preference clearTrackerButton = findPreference("clear_tracker");
             clearTrackerButton.setOnPreferenceClickListener(preference -> {
                 new IonAlert(getActivity(), IonAlert.WARNING_TYPE)
                         .setTitleText("Clear download log?")
                         .setContentText("Download log will not be recoverable")
                         .setConfirmText("Yes, clear log")
                         .setConfirmClickListener(ionAlert -> {
-                            TwistAppMain.getINSTANCE().getDownloadTracker().clearTrack();
+                            TwistAppMain.getInstance().getDownloadTracker().clearTrack();
                             ionAlert.dismissWithAnimation();
                         }).setCancelText("Abort").setCancelClickListener(IonAlert::dismissWithAnimation)
                         .show();

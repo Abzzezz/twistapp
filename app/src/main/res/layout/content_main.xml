@@ -24,5 +24,5 @@
             app:layout_constraintTop_toTopOf="parent"
             app:defaultNavHost="true"
             app:navGraph="@navigation/mobile_navigation"
-    />
+            />
 </androidx.constraintlayout.widget.ConstraintLayout>

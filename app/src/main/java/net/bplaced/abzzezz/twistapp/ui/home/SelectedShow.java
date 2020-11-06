@@ -8,7 +8,6 @@ package net.bplaced.abzzezz.twistapp.ui.home;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,16 +15,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import ga.abzzezz.util.logging.Logger;
 import id.ionbit.ionalert.IonAlert;
 import net.bplaced.abzzezz.twistapp.R;
 import net.bplaced.abzzezz.twistapp.TwistAppMain;
 import net.bplaced.abzzezz.twistapp.ui.MainActivity;
-import net.bplaced.abzzezz.twistapp.ui.player.PlayerActivity;
 import net.bplaced.abzzezz.twistapp.util.tasks.DecodeTask;
 import net.bplaced.abzzezz.twistapp.util.tasks.DownloadTask;
 import net.bplaced.abzzezz.twistapp.util.tasks.TaskExecutor;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -40,38 +40,36 @@ public class SelectedShow extends AppCompatActivity {
     private String showName;
     private File showDir;
     private EpisodeAdapter episodeAdapter;
-    private JSONObject episodes;
+    private JSONArray sources;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selected_show);
-        int showIndex = getIntent().getIntExtra("show_index", -1);
+        final int showIndex = getIntent().getIntExtra("show_index", -1);
+        final JSONObject details = TwistAppMain.getInstance().getShowSaver().getShowDetails(showIndex);
 
-        JSONObject details = TwistAppMain.getINSTANCE().getShowSaver().getShowDetails(showIndex);
         try {
-
             this.showName = details.getString("title");
             this.showDir = new File(getFilesDir(), showName);
+            this.sources = details.getJSONArray("sources");
 
-            final String episodeSum = details.getString("episode");
-            final String description = details.getString("description");
-            this.episodes = details.getJSONObject("episodes");
+            //   final String description = details.getString("description");
 
             final TextView showNameView = findViewById(R.id.show_name_view);
             final TextView showEpisodesView = findViewById(R.id.show_episodes_view);
-            final TextView showDescriptionView = findViewById(R.id.show_episodes_view);
+            //  final TextView showDescriptionView = findViewById(R.id.show_episodes_view);
 
             showNameView.setText(showName);
-            showEpisodesView.setText("Episodes" + episodeSum);
+            showEpisodesView.setText("Episodes" + sources.length());
 
             //      showDescriptionView.setText(description);
 
-            ListView episodeListView = findViewById(R.id.episodes_list_view);
-            episodeListView.setAdapter(episodeAdapter = new EpisodeAdapter(episodes, getApplicationContext()));
+            final ListView episodeListView = findViewById(R.id.episodes_list_view);
+            episodeListView.setAdapter(episodeAdapter = new EpisodeAdapter(sources, getApplicationContext()));
             episodeListView.setOnItemClickListener((adapterView, view, i, l) -> {
-                final boolean isDownloaded = episodeExists(i);
+                final boolean isDownloaded = isEpisodeDownloaded(i);
 
                 new IonAlert(SelectedShow.this, IonAlert.NORMAL_TYPE)
                         .setConfirmText("Stream")
@@ -85,8 +83,8 @@ public class SelectedShow extends AppCompatActivity {
                         }).show();
             });
 
-            FloatingActionButton downloadShow = findViewById(R.id.download_button_show);
-            downloadShow.setOnClickListener(view -> download(0, Integer.parseInt(episodeSum), 0));
+            final FloatingActionButton downloadShow = findViewById(R.id.download_button_show);
+            downloadShow.setOnClickListener(view -> download(0, sources.length(), 0));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -98,9 +96,15 @@ public class SelectedShow extends AppCompatActivity {
 
 
     private void playDownloaded(final int index) {
-        File file = getEpisodeFile(index);
-        Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
-        intent.putExtra("path", file.getAbsolutePath());
+        final File file = getEpisodeFile(index);
+        //   final Intent intent = new Intent(getApplicationContext(), PlayerActivity.class);
+        // intent.putExtra("path", file.getAbsolutePath());
+
+        //  startActivity(Objects.requireNonNull(intent));
+        // finish();
+        final Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(FileProvider.getUriForFile(getApplicationContext(), getApplicationContext().getPackageName() + ".provider", file), "video/mp4");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivity(Objects.requireNonNull(intent));
         finish();
     }
@@ -119,13 +123,13 @@ public class SelectedShow extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(getApplication(), MainActivity.class);
+        final Intent intent = new Intent(getApplication(), MainActivity.class);
         startActivity(intent);
         finish();
         super.onBackPressed();
     }
 
-    private boolean episodeExists(final int index) {
+    private boolean isEpisodeDownloaded(final int index) {
         if (showDir.list() != null) {
             return Arrays.stream(showDir.list()).anyMatch(s -> s.substring(0, s.lastIndexOf(".")).equals(String.valueOf(index)));
         }
@@ -134,7 +138,7 @@ public class SelectedShow extends AppCompatActivity {
 
     public void download(final int start, final int countMax, final int currentCount) {
         Logger.log("Next episode: " + start, Logger.LogType.INFO);
-        int[] count = {currentCount, start};
+        final int[] count = {currentCount, start};
         /*
          * Check if count is bigger than the max episodes to download
          */
@@ -143,7 +147,7 @@ public class SelectedShow extends AppCompatActivity {
             return;
         }
         try {
-            String item = episodes.getString(String.valueOf(count[1]));
+            final String item = sources.getString(count[1]);
             new DecodeTask(item).executeAsync(new TaskExecutor.Callback<String>() {
                 @Override
                 public void preExecute() {
@@ -151,7 +155,7 @@ public class SelectedShow extends AppCompatActivity {
                 }
 
                 @Override
-                public void onComplete(String result) {
+                public void onComplete(final String result) {
                     Log.i("Decoder", "Done: " + result);
                     //Start new download thread
                     try {
@@ -168,10 +172,10 @@ public class SelectedShow extends AppCompatActivity {
 
     public class EpisodeAdapter extends BaseAdapter {
 
-        private final JSONObject episodes;
+        private final JSONArray episodes;
         private final Context context;
 
-        public EpisodeAdapter(JSONObject episodes, Context context) {
+        public EpisodeAdapter(final JSONArray episodes, final Context context) {
             this.episodes = episodes;
             this.context = context;
         }
@@ -198,7 +202,7 @@ public class SelectedShow extends AppCompatActivity {
             final TextView textView = view.findViewById(R.id.episode_name_view);
             textView.setText("Episode: " + index);
 
-            if (episodeExists(index)) {
+            if (isEpisodeDownloaded(index)) {
                 textView.setTextColor(0xFFff6768);
                 imageView.setImageResource(R.drawable.delete);
                 imageView.setOnClickListener(view1 -> new IonAlert(SelectedShow.this, IonAlert.WARNING_TYPE).setTitleText("Delete file?").setConfirmText("Yes, delete").setConfirmClickListener(ionAlert -> {

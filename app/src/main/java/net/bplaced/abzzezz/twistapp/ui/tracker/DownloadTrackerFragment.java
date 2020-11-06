@@ -24,7 +24,7 @@ public class DownloadTrackerFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_download_tracker, container, false);
         final ListView listView = root.findViewById(R.id.tacker_list_view);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1);
-        arrayAdapter.addAll(TwistAppMain.getINSTANCE().getDownloadTracker().getList());
+        arrayAdapter.addAll(TwistAppMain.getInstance().getDownloadTracker().getList());
         listView.setAdapter(arrayAdapter);
         return root;
     }

@@ -9,6 +9,7 @@ package net.bplaced.abzzezz.twistapp.util.tasks;
 import android.util.Log;
 import net.bplaced.abzzezz.twistapp.TwistAppMain;
 import net.bplaced.abzzezz.twistapp.util.misc.StringHandler;
+import net.bplaced.abzzezz.twistapp.util.misc.URLUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -35,45 +36,43 @@ public class RefreshTask extends TaskExecutor implements Callable<String> {
 
     @Override
     public String call() throws Exception {
-        JSONObject jsonObject = TwistAppMain.getINSTANCE().getShowSaver().getShowDetails(index);
-        String showPath = jsonObject.getString("url");
-        URL url = new URL(StringHandler.getApiUrl(showPath, 0));
-        int episodes = jsonObject.getInt("episode");
+        final JSONObject showDetails = TwistAppMain.getInstance().getShowSaver().getShowDetails(index);
+        final String showPath = showDetails.getString("url");
+        final int episodes = showDetails.getInt("episode_count");
 
-        HttpsURLConnection connection = createHttpsConnection(url);
+        URL apiUrl = new URL(StringHandler.getApiUrl(showPath, 0));
+
+
+        HttpsURLConnection connection = URLUtil.createHttpsConnection(apiUrl);
         connection.connect();
 
-        JSONObject detailJSON = new JSONObject(new BufferedReader(new InputStreamReader(connection.getInputStream())).lines().collect(Collectors.joining()));
-        int newEpisodes = detailJSON.getJSONArray("episodes").length();
-        String newEpisodesString = String.valueOf(newEpisodes);
+        final JSONObject fetchedJSON = new JSONObject(new BufferedReader(new InputStreamReader(connection.getInputStream())).lines().collect(Collectors.joining()));
+        final int updatedCount = fetchedJSON.getJSONArray("episodes").length();
+        final String updatedCountString = String.valueOf(updatedCount);
 
-        if (newEpisodes > episodes) {
-            TwistAppMain.getINSTANCE().getShowSaver().updateEntry(index, new String[]{"episode", newEpisodesString});
+        if (updatedCount > episodes) {
+            TwistAppMain.getInstance().getShowSaver().updateEntry(index, "episode_count", updatedCountString);
             //Open URL to sources
-            url = new URL(StringHandler.getApiUrl(showPath, StringHandler.SOURCE_MODE));
-            connection = createHttpsConnection(url);
+            apiUrl = new URL(StringHandler.getApiUrl(showPath, StringHandler.SOURCE_MODE));
+            connection = URLUtil.createHttpsConnection(apiUrl);
             connection.connect();
 
-            final String source = new BufferedReader(new InputStreamReader(connection.getInputStream())).lines().collect(Collectors.joining());
-            final JSONArray arrays = new JSONArray(source);
-            final JSONObject jsonSource = new JSONObject();
+            final JSONArray fetchedSources = new JSONArray(new BufferedReader(new InputStreamReader(connection.getInputStream())).lines().collect(Collectors.joining()));
+            final JSONArray sources = new JSONArray();
 
-            for (int i = 0; i < arrays.length(); i++)
-                jsonSource.put(String.valueOf(i), arrays.getJSONObject(i).getString("source"));
+            for (int i = 0; i < fetchedSources.length(); i++) {
+                final JSONObject item = fetchedSources.getJSONObject(i);
+                sources.put(item.getString("source"));
+            }
 
-            Log.i("Refresh-Task", "Sources refreshed, episode count updated : " + jsonSource.toString());
-            TwistAppMain.getINSTANCE().getShowSaver().updateEntry(index, "episodes", jsonSource);
+            Log.i("Refresh-Task", "Sources refreshed, episode count updated : " + sources);
+
+            TwistAppMain.getInstance().getShowSaver().updateEntry(index, "sources", sources.toString());
         }
 
-        return newEpisodesString;
+        return updatedCountString;
     }
 
-    private HttpsURLConnection createHttpsConnection(final URL url) throws IOException {
-        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-        connection.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36");
-        connection.addRequestProperty("x-access-token", StringHandler.getRequestToken());
-        return connection;
-    }
+
 
 }

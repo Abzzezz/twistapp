@@ -72,7 +72,8 @@ public class DownloadTask extends TaskExecutor implements Callable<String>, Task
         final File outDir = new File(application.getFilesDir(), showName);
         if (!outDir.exists()) outDir.mkdir();
         this.outFile = new File(outDir, episode + ".mp4");
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
         connection.setRequestProperty("User-Agent", StringHandler.USER_AGENT);
         connection.addRequestProperty("Range", "f'bytes={pos}-");
@@ -81,13 +82,12 @@ public class DownloadTask extends TaskExecutor implements Callable<String>, Task
 
         //Open Stream
         this.fileOutputStream = new FileOutputStream(outFile);
-        ReadableByteChannel readableByteChannel = Channels.newChannel(connection.getInputStream());
+        final ReadableByteChannel readableByteChannel = Channels.newChannel(connection.getInputStream());
         //Copy from channel to channel
         fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
         //Close stream
         Logger.log("Done copying streams, closing stream", Logger.LogType.INFO);
         fileOutputStream.close();
-
         return StringHandler.formatToShowString(showName, episode);
     }
 
@@ -112,7 +112,7 @@ public class DownloadTask extends TaskExecutor implements Callable<String>, Task
         //Delay and start if not cancelled
         if (!isCancelled()) {
             //Track download
-            TwistAppMain.getINSTANCE().getDownloadTracker().submitTrack("Downloaded: " + result);
+            TwistAppMain.getInstance().getDownloadTracker().submitTrack("Downloaded: " + result);
             //Start new task
             new Handler(Looper.getMainLooper()).postDelayed(() -> {
                 if (count[0] < count[2]) {

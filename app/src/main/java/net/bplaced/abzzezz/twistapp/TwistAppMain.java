@@ -31,7 +31,7 @@ public class TwistAppMain {
         this.version = 1;
     }
 
-    public static TwistAppMain getINSTANCE() {
+    public static TwistAppMain getInstance() {
         return INSTANCE;
     }
 
@@ -48,11 +48,11 @@ public class TwistAppMain {
     public void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Logger.log("Creating new notification channel", Logger.LogType.INFO);
-            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "Twist-App-Channel", NotificationManager.IMPORTANCE_HIGH);
+            final NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "Twist-App-Channel", NotificationManager.IMPORTANCE_HIGH);
             channel.setDescription("Notification channel to display download notification");
-            NotificationManager notificationManager = root.getSystemService(NotificationManager.class);
+            final NotificationManager notificationManager = root.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
-            NotificationManagerCompat managerCompat = NotificationManagerCompat.from(root);
+            final NotificationManagerCompat managerCompat = NotificationManagerCompat.from(root);
             managerCompat.cancelAll();
         }
     }

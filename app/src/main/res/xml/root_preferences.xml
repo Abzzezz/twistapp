@@ -5,7 +5,8 @@
   -->
 
 <PreferenceScreen
-        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:background="@color/colorPrimaryDark">
 
     <PreferenceCategory
@@ -29,8 +30,10 @@
             android:title="@string/global_video">
         <ListPreference
                 android:defaultValue="0"
-                android:title="@string/video_fill_mode" android:entries="@array/video_zoom_entries"
-                android:entryValues="@array/video_zoom_values" android:key="video_stretch_preference"/>
+                android:title="@string/video_fill_mode"
+                android:entries="@array/video_zoom_entries"
+                android:entryValues="@array/video_zoom_values"
+                android:key="video_stretch_preference"/>
         <!--
                 <ListPreference
                         android:defaultValue="0"
@@ -40,9 +43,10 @@
     </PreferenceCategory>
     <PreferenceCategory
             android:title="@string/menu_tracker">
-        <Preference android:title="Clear tacking log"
-                    android:key="clear_tracker"
-                    android:summary="Clear your tracking history."/>
+        <Preference
+                android:title="Clear tacking log"
+                android:key="clear_tracker"
+                android:summary="Clear your tracking history."/>
     </PreferenceCategory>
 
 </PreferenceScreen>
