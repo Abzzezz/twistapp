@@ -85,6 +85,7 @@ public class DownloadTask extends TaskExecutor implements Callable<String>, Task
         final ReadableByteChannel readableByteChannel = Channels.newChannel(connection.getInputStream());
         //Copy from channel to channel
         fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+
         //Close stream
         Logger.log("Done copying streams, closing stream", Logger.LogType.INFO);
         fileOutputStream.close();
@@ -153,7 +154,7 @@ public class DownloadTask extends TaskExecutor implements Callable<String>, Task
                 .setContentText("Currently downloading episode: " + StringHandler.formatToShowString(showName, episode))
                 .setContentTitle("Episode Download")
                 .setPriority(NotificationCompat.PRIORITY_HIGH).addAction(R.drawable.ic_cancel, "Stop downloading", stopDownloadingPendingIntent)
-                .setOngoing(true);
+                .setOngoing(true).setProgress(100, 50, true);
         //Notify
         this.notificationManagerCompat.notify(notifyID, notification.build());
     }

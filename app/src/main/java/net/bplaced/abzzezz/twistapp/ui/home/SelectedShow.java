@@ -76,9 +76,10 @@ public class SelectedShow extends AppCompatActivity {
                         .setConfirmClickListener(ionAlert -> streamEpisode(i))
                         .setCancelText(isDownloaded ? "Play downloaded" : "Cancel")
                         .setCancelClickListener(ionAlert -> {
-                            if (isDownloaded)
+                            if (isDownloaded) {
                                 playDownloaded(i);
-                            else
+                                ionAlert.dismiss();
+                            } else
                                 ionAlert.dismissWithAnimation();
                         }).show();
             });

@@ -14,7 +14,6 @@ import org.json.JSONObject;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -62,11 +61,10 @@ public class AddItemTask extends TaskExecutor implements Callable<JSONObject> {
         final JSONObject showDetails = new JSONObject();
         showDetails.put("url", showName)
                 .put("title", fetchedDetails.getString("title"))
-                .put("description", fetchedDetails.getString("description"))
                 .put("id", fetchedDetails.getString("id"))
                 .put("sources", sources)
-                .put("episode_count", sources.length());
-
+                .put("episode_count", sources.length())
+                .put("description", fetchedDetails.getString("description"));
         return showDetails;
     }
 }
